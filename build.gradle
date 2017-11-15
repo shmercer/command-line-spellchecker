@@ -1,0 +1,80 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.6.3'
+        classpath 'nl.javadude.gradle.plugins:license-gradle-plugin:0.11.0'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6'
+        classpath 'org.ajoberstar:gradle-git:1.3.2'
+        classpath 'org.kordamp.gradle:stats-gradle-plugin:0.2.0'
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.12.0'
+        classpath 'net.nemerosa:versioning:2.1.0'
+        classpath "com.github.jengelman.gradle.plugins:shadow:1.2.3"
+
+    }
+}
+
+apply plugin: 'application'
+apply plugin: 'idea'
+apply plugin: 'groovy'
+apply plugin: 'java'
+apply plugin: "com.github.johnrengelman.shadow"
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+
+    compile files('libs/darwin/libhunspell-darwin-x86-64.dylib')
+    compile files('libs/hunspell-darwin-x86-64.jnilib')
+    compile files('libs/dict/en_CA.dic')
+    compile files('libs/dict/en_CA.aff')
+    compile files('libs/dict/en_US.dic')
+    compile files('libs/dict/en_US.aff')
+
+    compile group: 'commons-cli', name: 'commons-cli', version: '1.4'
+    compile 'org.codehaus.groovy:groovy-all:2.4.7'
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.9'
+    compile 'org.languagetool:language-en:3.9'
+
+}
+
+task sourcesJar(type: Jar) {
+    group 'Build'
+    description 'An archive of the source code'
+    classifier 'sources'
+    from sourceSets.main.allSource
+}
+
+jar.finalizedBy sourcesJar
+
+mainClassName = 'com.gsaqui.checker.Checker'
+
+runShadow {
+    args 'foo'
+}
+
+shadowJar {
+    baseName = 'checker'
+}
+
+artifacts {
+    sourcesJar
+}
+
+gradle.taskGraph.whenReady {
+    def createIfNotExists = { File dir ->
+        if (!dir.exists()) {
+            dir.mkdirs()
+        }
+    }
+
+    String sourceSetName = project.plugins.hasPlugin('groovy') ? 'groovy' : 'java'
+    sourceSets.main[sourceSetName].srcDirs.each(createIfNotExists)
+    sourceSets.test[sourceSetName].srcDirs.each(createIfNotExists)
+    sourceSets.main.resources.srcDirs.each(createIfNotExists)
+    sourceSets.test.resources.srcDirs.each(createIfNotExists)
+}
