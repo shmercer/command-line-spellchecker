@@ -29,6 +29,8 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     compile files('libs/darwin/libhunspell-darwin-x86-64.dylib')
+    compile files('libs/hunspell-win-x86-32.dll')
+    compile files('libs/hunspell-win-x86-64.dll')
     compile files('libs/hunspell-darwin-x86-64.jnilib')
     compile files('libs/dict/en_CA.dic')
     compile files('libs/dict/en_CA.aff')
