@@ -7,7 +7,7 @@ Command line tool to recursively look for .txt files and count the grammar mista
 - Download and store in a directory all the dictionary files https://github.com/gsaqui/command-line-spellchecker/tree/master/libs/dict
 - Make sure you have java 8+ on your machine
 - run `java -jar checker-all.jar <path of the base directory that holds all the data files> <output file name eg output.csv> <dictionary to use>`
-   - example : `java -jar checker-all.jar datafile/ ca-results.csv dict/en_CA.dic`
+   - example : `java -jar checker-all.jar datafiles/ ca-results.csv dict/en_CA.dic`
 
 
 ## Building the source
