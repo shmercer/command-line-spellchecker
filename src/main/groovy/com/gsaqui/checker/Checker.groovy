@@ -41,6 +41,7 @@ class Checker {
                 String text = f.text
                 text = text.replaceAll("[\\u2018\\u2019]", "'")
                         .replaceAll("[\\u201C\\u201D]", "\"")
+                f.text = text
                 count.grammaticalErrors = checkGrammar(text)
                 def (int spellingErrors, String updatedText) = spelling(text)
 
